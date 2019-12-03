@@ -1,8 +1,12 @@
-package dev.acraig.adventcalendar.y2019.day1
+package dev.acraig.adventofcode.y2019.day1
 
 fun main() {
     val input = Unit::class.java.getResource("/day1_input.csv").readText().lines().filter { it.isNotEmpty() }
-    val result = input.map { it.toLong() }.map { accumulatedFuel(it) }.sum()
+    val result = input.map { it.toLong() }.map {
+        accumulatedFuel(
+            it
+        )
+    }.sum()
     println(result)
 }
 
@@ -11,5 +15,8 @@ private tailrec fun accumulatedFuel(amt:Long, accumulator:Long = 0):Long {
     if (fuelRequired <= 0) {
         return accumulator
     }
-    return accumulatedFuel(fuelRequired, accumulator + fuelRequired)
+    return accumulatedFuel(
+        fuelRequired,
+        accumulator + fuelRequired
+    )
 }

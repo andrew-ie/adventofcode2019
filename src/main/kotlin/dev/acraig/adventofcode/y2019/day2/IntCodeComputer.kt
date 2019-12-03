@@ -1,4 +1,4 @@
-package dev.acraig.adventcalendar.y2019.day2
+package dev.acraig.adventofcode.y2019.day2
 
 import java.lang.IllegalStateException
 
