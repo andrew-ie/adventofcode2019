@@ -1,9 +1,9 @@
 package dev.acraig.adventofcode.y2019.day4
 fun main() {
-    val range = 231832..767346 //We could optimize this number, as we know it can't be higher than 699999
-    val match = range.filter { validate(it.toString().toCharArray()) }
+    val range = (231832..767346).map { it.toString() } //We could optimize this number, as we know it can't be higher than 699999
+    val match = range.filter { validate(it.toCharArray()) }
     println("Part1 - ${match.size}")
-    val part2 = match.filter { validatePart2(it.toString()) }
+    val part2 = match.filter { validatePart2(it) }
     println("Part2 - ${part2.size}")
 }
 
