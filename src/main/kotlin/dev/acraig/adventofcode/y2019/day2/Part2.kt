@@ -9,7 +9,8 @@ fun main() {
         for (verb in 0..99) {
             sourceCode[2] = verb
             val computer = IntCodeComputer(sourceCode)
-            if (computer.run() == 19690720) {
+            computer.run()
+            if (computer.state[0] == 19690720) {
                 println("${noun * 100 + verb}")
                 break@complete
             }

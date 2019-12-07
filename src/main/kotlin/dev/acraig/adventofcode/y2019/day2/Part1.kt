@@ -7,5 +7,6 @@ fun main() {
     sourceCode[1] = 12
     sourceCode[2] = 2
     val computer = IntCodeComputer(sourceCode)
-    println(computer.run())
+    computer.run()
+    println(computer.state[0])
 }
