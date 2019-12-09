@@ -8,8 +8,8 @@ fun main() {
     val imageLayers = imageSource.chunked(WIDTH * HEIGHT).map { it.toCharArray() }
     val counts = imageLayers.map { it to countDigits(it) }.sortedBy { it.second['0'] }.first()
     println("Sorted ${counts.second} - ${counts.first.joinToString("")}")
-    val image = imageLayers.fold(imageLayers.first(), ::combine)
-    image.map { if (it == '0') ' ' else '*' }.joinToString("").chunkedSequence(25).forEach { println(it) }
+    val image = imageLayers.reduce(::combine)
+    println(image.map { if (it == '0') ' ' else '\u2588' }.joinToString("").chunked(WIDTH).joinToString("\n" ))
 }
 
 fun countDigits(array:CharArray):Map<Char, Int> {

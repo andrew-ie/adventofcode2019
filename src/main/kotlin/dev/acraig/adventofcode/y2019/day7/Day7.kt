@@ -4,7 +4,7 @@ import dev.acraig.adventofcode.y2019.common.IntCodeComputer
 import kotlin.math.pow
 
 fun main() {
-    val sourceCode = Unit::class.java.getResource("/day7_input.txt").readText().trim().split(",").map { it.toInt() }.toIntArray()
+    val sourceCode = Unit::class.java.getResource("/day7_input.txt").readText().trim().split(",").map { it.toLong() }.toLongArray()
     val thrusters = (0..4).map { Thruster(it, sourceCode) }
     var position = 0
     val phases = generateSequence {
@@ -19,7 +19,7 @@ fun main() {
     phases.map { it to runChain(it, thrusters) }.sortedByDescending { it.second.last() }.take(5).forEach { println(it) }
 }
 
-fun runChain(phase:List<Int>, thrusters:List<Thruster>):List<Int> {
+fun runChain(phase:List<Int>, thrusters:List<Thruster>):List<Long> {
     thrusters.forEachIndexed {
         index, it -> if (index == thrusters.lastIndex) {
             it.nextThruster = thrusters[0]
@@ -28,7 +28,7 @@ fun runChain(phase:List<Int>, thrusters:List<Thruster>):List<Int> {
         }
     }
     phase.forEachIndexed {
-        index, it -> thrusters[index].computer.setup(it)
+        index, it -> thrusters[index].computer.setup(it.toLong())
     }
     thrusters.forEach { it.run()}
     thrusters[0].computer.setup(0)
@@ -41,10 +41,10 @@ fun runChain(phase:List<Int>, thrusters:List<Thruster>):List<Int> {
     return output
 }
 
-class Thruster(index:Int, source:IntArray) {
+class Thruster(index:Int, source:LongArray) {
     val computer:IntCodeComputer = IntCodeComputer(source, "$index")
     lateinit var nextThruster:Thruster
-    var lastOutput = 0
+    var lastOutput = 0L
     fun run() {
         computer.run() {
             lastOutput = it
