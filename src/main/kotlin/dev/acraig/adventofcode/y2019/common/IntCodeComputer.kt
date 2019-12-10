@@ -18,8 +18,12 @@ class IntCodeComputer(private val input:LongArray, private val name:String = "In
     }
 
     fun run(outputProcessor: (Long) -> Unit = { }){
-        println("$name running with input $state.nextInput")
         var currOpCode = state.getNextOpCode()
+        if (state.position == 0) {
+            println("$name running with input ${state.nextInput}")
+        } else {
+            println("Resuming $name at position ${state.position} ($currOpCode)")
+        }
         if (currOpCode.code == Instruction.INPUT) {
             state.position = currOpCode.code.operate(currOpCode, state, outputProcessor)
             currOpCode = state.getNextOpCode()
@@ -36,7 +40,7 @@ class IntCodeComputer(private val input:LongArray, private val name:String = "In
         constructor(input:Long) : this(input.toInt(),getDigit(input, 0), getDigit(input, 1), getDigit(input, 2), INSTRUCTION_MAP[input.toInt() % 100] ?: Instruction.ERROR)
     }
 
-    data class State(var memory:MutableList<Long>, var nextInput: Long = 0L, var position:Int = 0, var relativeOffset:Int = 0) {
+    data class State(var memory:MutableList<Long>, var nextInput: Long? = null, var position:Int = 0, var relativeOffset:Int = 0) {
         fun getNextOpCode():OpCode {
             return OpCode(memory[position])
         }
@@ -50,7 +54,6 @@ class IntCodeComputer(private val input:LongArray, private val name:String = "In
 
         operator fun set(index:Int, value:Long) {
             if (memory.size <= index) {
-                println("Expanding memory to fit to position $index (${memory.size})")
                 memory.addAll((0..(index - memory.size)).map { 0L })
             }
             memory[index] = value
@@ -78,7 +81,12 @@ class IntCodeComputer(private val input:LongArray, private val name:String = "In
         },
         INPUT(3, 1) {
             override fun execute(opcode: OpCode, state: State, parameters: List<Long>, output: (Long) -> Unit) {
-                setValue(state, opcode, parameters, 0, state.nextInput)
+                if (state.nextInput != null) {
+                    setValue(state, opcode, parameters, 0, state.nextInput!!)
+                    state.nextInput = null
+                } else {
+                    throw java.lang.IllegalStateException("Expected input to be set")
+                }
             }
         },
         OUTPUT(4, 1) {
