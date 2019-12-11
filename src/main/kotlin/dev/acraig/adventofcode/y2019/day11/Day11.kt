@@ -30,13 +30,13 @@ private fun paint(init: Int, printDrawing: Boolean) {
         val maxX = ship.colour.keys.maxBy { it.x }!!.x
         val minY = ship.colour.keys.minBy { it.y }!!.y
         val maxY = ship.colour.keys.maxBy { it.y }!!.y
-        for (x in minX..maxX) {
+        for (y in minY..maxY) {
             val string = StringBuilder()
-            for (y in minY..maxY) {
+            for (x in minX..maxX) {
                 if (ship.colour.getOrDefault(Position(x, y), 0) == 0) {
                     string.append(" ")
                 } else {
-                    string.append("#")
+                    string.append("\u2588")
                 }
             }
             println(string)
@@ -87,8 +87,8 @@ class Ship() {
         }
         robotOrientation = values[newPosition]
         robotPosition = when (robotOrientation) {
-            Orientation.UP -> Position(robotPosition.x, robotPosition.y + 1)
-            Orientation.DOWN -> Position(robotPosition.x, robotPosition.y - 1)
+            Orientation.UP -> Position(robotPosition.x, robotPosition.y - 1)
+            Orientation.DOWN -> Position(robotPosition.x, robotPosition.y + 1)
             Orientation.LEFT -> Position(robotPosition.x - 1, robotPosition.y)
             Orientation.RIGHT -> Position(robotPosition.x + 1, robotPosition.y)
         }
