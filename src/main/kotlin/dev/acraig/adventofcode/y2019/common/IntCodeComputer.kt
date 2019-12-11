@@ -19,11 +19,6 @@ class IntCodeComputer(private val input:LongArray, private val name:String = "In
 
     fun run(outputProcessor: (Long) -> Unit = { }){
         var currOpCode = state.getNextOpCode()
-        if (state.position == 0) {
-            println("$name running with input ${state.nextInput}")
-        } else {
-            println("Resuming $name at position ${state.position} ($currOpCode)")
-        }
         if (currOpCode.code == Instruction.INPUT) {
             state.position = currOpCode.code.operate(currOpCode, state, outputProcessor)
             currOpCode = state.getNextOpCode()
